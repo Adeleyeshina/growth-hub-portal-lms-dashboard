@@ -658,6 +658,31 @@ html, body {
     }
 }
 
+/* Global Pill Toggle Buttons */
+.gh-pill-btn {
+    border: 1.5px solid #D8D2EE !important;
+    background: #FFFFFF !important;
+    color: #1B1240 !important;
+    font-family: var(--gh-font-h, 'Poppins', sans-serif) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 8px 18px !important;
+    border-radius: 9999px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+.gh-pill-btn:hover {
+    border-color: #632FD1 !important;
+    background: #F4F1FB !important;
+    color: #632FD1 !important;
+}
+.gh-pill-btn.active,
+.gh-pill-btn.active:hover {
+    background: #632FD1 !important;
+    border-color: #632FD1 !important;
+    color: #FFFFFF !important;
+}
+
 /* Overview Header & 5 Metric Cards */
 .gh-overview-top {
     display: flex !important;

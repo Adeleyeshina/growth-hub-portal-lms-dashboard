@@ -4041,6 +4041,18 @@ function gh_render_ops_manager_cohort_delivery_html() {
         flex: 1 1 320px;
         min-width: 0;
     }
+    @media (max-width: 768px) {
+        .gh-manager-title-wrap {
+            flex: none !important;
+            width: 100% !important;
+            min-height: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        .gh-manager-header {
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+        }
+    }
     .gh-manager-title {
         font-family: var(--gh-font-h, 'Poppins', sans-serif);
         font-size: 28px;
@@ -5866,7 +5878,8 @@ $cancel_url = add_query_arg( 'tab', 'weekly-report' );
                 <!-- 7. Action Button -->
                 <div class="gh-concern-btn-wrap">
                     <button type="submit" id="gh-btn-submit-concern" class="gh-btn-solid-purple">
-                        <?php esc_html_e( 'Send to hub manager and Ops and BD Manager', 'growth-hub' ); ?>
+                        <span class="gh-btn-text-desktop"><?php esc_html_e( 'Send to hub manager and Ops and BD Manager', 'growth-hub' ); ?></span>
+                        <span class="gh-btn-text-mobile"><?php esc_html_e( 'Submit Concern Report', 'growth-hub' ); ?></span>
                     </button>
                 </div>
             </form>
@@ -6037,10 +6050,12 @@ $cancel_url = add_query_arg( 'tab', 'weekly-report' );
     outline: none;
 }
 .gh-pill-btn:hover {
-    border-color: #632FD1;
-    background: #F4F1FB;
+    border-color: #632FD1 !important;
+    background: #F4F1FB !important;
+    color: #632FD1 !important;
 }
-.gh-pill-btn.active {
+.gh-pill-btn.active,
+.gh-pill-btn.active:hover {
     background: #632FD1 !important;
     border-color: #632FD1 !important;
     color: #FFFFFF !important;
@@ -6239,6 +6254,11 @@ $cancel_url = add_query_arg( 'tab', 'weekly-report' );
     }
     .gh-concern-form-card {
         padding: 22px 18px;
+    }
+    .gh-btn-text-mobile { display: none; }
+    @media (max-width: 640px) {
+        .gh-btn-text-desktop { display: none !important; }
+        .gh-btn-text-mobile { display: inline !important; }
     }
     .gh-btn-solid-purple {
         width: 100%;

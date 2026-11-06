@@ -890,6 +890,18 @@ $at_risk_count = count( $at_risk_learners );
     flex: 1 1 320px;
     min-width: 0;
 }
+@media (max-width: 768px) {
+    .gh-manager-title-wrap {
+        flex: none !important;
+        width: 100% !important;
+        min-height: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    .gh-manager-header {
+        gap: 12px !important;
+        margin-bottom: 16px !important;
+    }
+}
 .gh-manager-title {
     font-family: var(--gh-font-h, 'Poppins', sans-serif);
     font-size: 28px;
@@ -926,7 +938,9 @@ $at_risk_count = count( $at_risk_learners );
     box-sizing: border-box;
 }
 .gh-btn-outline-purple:hover {
-    background: #F4F1FB;
+    background: #F4F1FB !important;
+    color: #632FD1 !important;
+    border-color: #632FD1 !important;
 }
 .gh-btn-solid-purple {
     background: #632FD1;

@@ -247,7 +247,8 @@ $cancel_url = add_query_arg( 'tab', 'weekly-report' );
                 <!-- 7. Action Button -->
                 <div class="gh-concern-btn-wrap">
                     <button type="submit" id="gh-btn-submit-concern" class="gh-btn-solid-purple">
-                        <?php esc_html_e( 'Send to hub manager and Ops and BD Manager', 'growth-hub' ); ?>
+                        <span class="gh-btn-text-desktop"><?php esc_html_e( 'Send to hub manager and Ops and BD Manager', 'growth-hub' ); ?></span>
+                        <span class="gh-btn-text-mobile"><?php esc_html_e( 'Submit Concern Report', 'growth-hub' ); ?></span>
                     </button>
                 </div>
             </form>
@@ -418,10 +419,12 @@ $cancel_url = add_query_arg( 'tab', 'weekly-report' );
     outline: none;
 }
 .gh-pill-btn:hover {
-    border-color: #632FD1;
-    background: #F4F1FB;
+    border-color: #632FD1 !important;
+    background: #F4F1FB !important;
+    color: #632FD1 !important;
 }
-.gh-pill-btn.active {
+.gh-pill-btn.active,
+.gh-pill-btn.active:hover {
     background: #632FD1 !important;
     border-color: #632FD1 !important;
     color: #FFFFFF !important;
@@ -621,10 +624,23 @@ $cancel_url = add_query_arg( 'tab', 'weekly-report' );
     .gh-concern-form-card {
         padding: 22px 18px;
     }
-    .gh-btn-solid-purple {
-        width: 100%;
-        text-align: center;
+    .gh-btn-text-mobile {
+    display: none;
+}
+@media (max-width: 640px) {
+    .gh-btn-text-desktop {
+        display: none !important;
     }
+    .gh-btn-text-mobile {
+        display: inline !important;
+    }
+    .gh-btn-solid-purple {
+        width: 100% !important;
+        text-align: center !important;
+        padding: 12px 20px !important;
+        font-size: 14.5px !important;
+    }
+}
 }
 </style>
 
