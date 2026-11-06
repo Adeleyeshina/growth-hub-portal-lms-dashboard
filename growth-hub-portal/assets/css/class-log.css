@@ -274,3 +274,14 @@
         align-self: flex-start !important;
     }
 }
+
+@media (max-width: 1024px) {
+    .gh-canvas-columns {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 20px !important;
+    }
+    .gh-grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+}

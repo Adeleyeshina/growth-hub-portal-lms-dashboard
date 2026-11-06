@@ -1216,11 +1216,17 @@ $at_risk_count = count( $at_risk_learners );
     }
     .gh-btn-outline-purple,
     .gh-btn-solid-purple {
-        flex: 1 1 160px;
-        text-align: center;
-        justify-content: center;
-        padding: 11px 16px;
-        font-size: 13.5px;
+        flex: 1 1 auto !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        max-height: 42px !important;
+        line-height: 42px !important;
+        padding: 0 18px !important;
+        font-size: 13.5px !important;
+        text-align: center !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     .gh-metric-grid-5 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1261,7 +1267,14 @@ $at_risk_count = count( $at_risk_learners );
     }
     .gh-btn-outline-purple,
     .gh-btn-solid-purple {
-        width: 100%;
+        width: 100% !important;
+        flex: none !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        line-height: 44px !important;
+        padding: 0 20px !important;
+        box-sizing: border-box !important;
     }
     .gh-filter-bar {
         flex-direction: column;

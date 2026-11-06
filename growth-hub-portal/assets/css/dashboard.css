@@ -657,3 +657,122 @@ html, body {
         font-size: 12px !important;
     }
 }
+
+/* Overview Header & 5 Metric Cards */
+.gh-overview-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    margin-bottom: 24px !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+}
+
+.gh-overview-top h1 {
+    font-family: var(--gh-font-h, 'Poppins', sans-serif) !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--gh-dark, #1B1240) !important;
+    margin: 0 0 6px 0 !important;
+    line-height: 1.2 !important;
+}
+
+.gh-overview-top p {
+    font-family: var(--gh-font-b, 'Lato', sans-serif) !important;
+    font-size: 14.5px !important;
+    color: #6B6580 !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+}
+
+.gh-stats-row {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    margin-bottom: 28px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.gh-header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+}
+.gh-btn-log-class {
+    background: var(--gh-purple, #632FD1) !important;
+    color: #FFFFFF !important;
+    font-family: var(--gh-font-h, 'Poppins', sans-serif) !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    padding: 10px 22px !important;
+    border-radius: 9999px !important;
+    text-decoration: none !important;
+    transition: background 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+}
+.gh-btn-log-class:hover {
+    background: #5224B8 !important;
+}
+.gh-btn-schedule-live {
+    background: #FFFFFF !important;
+    color: var(--gh-purple, #632FD1) !important;
+    border: 1.5px solid var(--gh-purple, #632FD1) !important;
+    font-family: var(--gh-font-h, 'Poppins', sans-serif) !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    padding: 9px 20px !important;
+    border-radius: 9999px !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+}
+.gh-btn-schedule-live:hover {
+    background: var(--gh-purple-light, #F4F1FB) !important;
+}
+
+@media (max-width: 1024px) {
+    .gh-canvas-columns {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 20px !important;
+        width: 100% !important;
+    }
+    .gh-stats-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+    }
+}
+@media (max-width: 768px) {
+    .gh-stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+    }
+    .gh-stats-row .gh-stat-card:last-child {
+        grid-column: span 2 !important;
+    }
+}
+@media (max-width: 640px) {
+    .gh-header-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+    .gh-btn-log-class,
+    .gh-btn-schedule-live {
+        width: 100% !important;
+        text-align: center !important;
+    }
+    .gh-stats-row {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .gh-stats-row .gh-stat-card:last-child {
+        grid-column: span 1 !important;
+    }
+}

@@ -189,6 +189,294 @@ $dash_url = function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_ur
 $log_class_url = trailingslashit( $dash_url ) . 'class-log';
 ?>
 
+<style>
+/* Growth Hub - Tutor Overview Master Styles */
+.gh-overview-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gh-overview-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    margin-bottom: 24px !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+}
+
+.gh-overview-top h1 {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #1B1240 !important;
+    margin: 0 0 6px 0 !important;
+    line-height: 1.2 !important;
+}
+
+.gh-overview-top p {
+    font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 14.5px !important;
+    color: #6B6580 !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+}
+
+.gh-header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+}
+
+.gh-btn-log-class {
+    background: #632FD1 !important;
+    color: #FFFFFF !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    padding: 10px 22px !important;
+    border-radius: 9999px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(99, 47, 209, 0.25) !important;
+    transition: background 0.15s ease !important;
+}
+.gh-btn-log-class:hover {
+    background: #5224B8 !important;
+    color: #FFFFFF !important;
+}
+
+.gh-btn-schedule-live {
+    background: #FFFFFF !important;
+    color: #632FD1 !important;
+    border: 1.5px solid #632FD1 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    padding: 8.5px 20px !important;
+    border-radius: 9999px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    transition: background 0.15s ease !important;
+}
+.gh-btn-schedule-live:hover {
+    background: #F4F1FB !important;
+    color: #5224B8 !important;
+}
+
+/* 5 Stat Cards Grid */
+.gh-stats-row {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    margin-bottom: 28px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.gh-stat-card {
+    background: #1B1240 !important;
+    border-radius: 12px !important;
+    padding: 20px 18px !important;
+    color: #FFFFFF !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 105px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 4px 12px rgba(27, 18, 64, 0.08) !important;
+}
+
+.gh-stat-num {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    margin-bottom: 8px !important;
+    color: #FFFFFF !important;
+}
+
+.gh-stat-desc {
+    font-family: 'Lato', sans-serif !important;
+    font-size: 13px !important;
+    color: #A39DB5 !important;
+    line-height: 1.3 !important;
+}
+
+/* Responsive Breakpoints for Stat Cards */
+@media (max-width: 1100px) {
+    .gh-stats-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+    }
+}
+@media (max-width: 768px) {
+    .gh-stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+    }
+    .gh-stats-row .gh-stat-card:last-child {
+        grid-column: span 2 !important;
+    }
+}
+@media (max-width: 600px) {
+    .gh-overview-top {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 16px !important;
+    }
+    .gh-header-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    .gh-btn-log-class,
+    .gh-btn-schedule-live {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+    .gh-stats-row {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .gh-stats-row .gh-stat-card:last-child {
+        grid-column: span 1 !important;
+    }
+}
+
+/* Section Cards & Tables */
+.gh-section-card {
+    background: #FFFFFF !important;
+    border: 1px solid #D8D2EE !important;
+    border-radius: 14px !important;
+    padding: 24px !important;
+    margin-bottom: 24px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+}
+
+.gh-card-top-bar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 16px !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+}
+
+.gh-card-top-bar h2 {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #1B1240 !important;
+    margin: 0 !important;
+}
+
+.gh-link-manage,
+.gh-action-link {
+    color: #632FD1 !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    text-decoration: none !important;
+    transition: color 0.15s ease !important;
+}
+.gh-link-manage:hover,
+.gh-action-link:hover {
+    color: #5224B8 !important;
+    text-decoration: underline !important;
+}
+
+.gh-table-wrap {
+    overflow-x: auto !important;
+    width: 100% !important;
+}
+
+.gh-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    text-align: left !important;
+}
+
+.gh-table th {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #8C85A6 !important;
+    padding: 12px 14px !important;
+    border-bottom: 1px solid #EBE7F7 !important;
+    background: transparent !important;
+}
+
+.gh-table td {
+    font-family: 'Lato', sans-serif !important;
+    font-size: 14px !important;
+    color: #1B1240 !important;
+    padding: 14px !important;
+    border-bottom: 1px solid #F4F1FB !important;
+}
+
+.gh-table tr:last-child td {
+    border-bottom: none !important;
+}
+
+.gh-pill-badge {
+    display: inline-block !important;
+    padding: 4px 10px !important;
+    border-radius: 9999px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+}
+
+.gh-badge-track, .gh-badge-live {
+    background: #E8F8F0 !important;
+    color: #10B981 !important;
+}
+
+.gh-badge-noclass, .gh-badge-launched {
+    background: #F4F1FB !important;
+    color: #632FD1 !important;
+}
+
+.gh-badge-quiz {
+    background: #FEF3C7 !important;
+    color: #D97706 !important;
+}
+
+.gh-badge-qa {
+    background: #E0E7FF !important;
+    color: #4F46E5 !important;
+}
+
+.gh-empty-state-cell {
+    text-align: center !important;
+    color: #8C85A6 !important;
+    padding: 24px 14px !important;
+    font-style: italic !important;
+}
+
+.gh-card-desc-note {
+    font-family: 'Lato', sans-serif !important;
+    font-size: 13.5px !important;
+    color: #8C85A6 !important;
+    margin: -8px 0 16px 0 !important;
+}
+</style>
+
 <div class="gh-overview-container">
     <!-- Top Welcome Row (Dynamic Counts) -->
     <div class="gh-overview-top">

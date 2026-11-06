@@ -200,9 +200,8 @@ if ( $is_manager_view ) {
                 </a>
             </li>
             <li class="gh-nav-item <?php echo 'class-log' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'class-log' ); ?>">
+                <a href="<?php echo esc_url( add_query_arg( 'tab', 'class-log', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Class Log', 'growth-hub' ); ?>
-                    
                 </a>
             </li>
             <li class="gh-nav-item <?php echo 'announcements' === $current_endpoint ? 'active' : ''; ?>">

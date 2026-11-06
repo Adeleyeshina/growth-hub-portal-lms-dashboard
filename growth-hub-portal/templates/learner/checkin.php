@@ -88,7 +88,8 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 
 <div class="gh-checkin-wrapper">
     <!-- Screen View Selector for Testing & Navigation -->
-    <div class="gh-screen-nav-bar">
+    <?php if ( isset( $_GET['preview_steps'] ) || isset( $_GET['dev'] ) ) : ?>
+        <div class="gh-screen-nav-bar">
         <span class="gh-screen-nav-label"><?php esc_html_e( 'Preview Screen:', 'growth-hub' ); ?></span>
         <button type="button" class="gh-screen-nav-btn <?php echo 'physical' === $class_mode ? 'active' : ''; ?>" onclick="ghSwitchScreen('screen-4a')">4a Physical</button>
         <button type="button" class="gh-screen-nav-btn <?php echo 'virtual' === $class_mode ? 'active' : ''; ?>" onclick="ghSwitchScreen('screen-4b')">4b Virtual</button>

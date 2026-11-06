@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'GH_PORTAL_VERSION', '1.0.0' );
+define( 'GH_PORTAL_VERSION', '1.0.1' );
 define( 'GH_PORTAL_PATH', plugin_dir_path( __FILE__ ) );
 define( 'GH_PORTAL_URL', plugin_dir_url( __FILE__ ) );
 

@@ -1105,8 +1105,8 @@ function gh_render_analytics_page() {
                         <li class="gh-nav-item">
                             <a href="<?php echo esc_url( home_url( '/dashboard/live-classes/' ) ); ?>">Live Classes</a>
                         </li>
-                        <li class="gh-nav-item">
-                            <a href="<?php echo esc_url( $log_class_url ); ?>">Class Log</a>
+                        <li class="gh-nav-item <?php echo ( isset( $_GET['tab'] ) && ( 'class-log' === $_GET['tab'] || 'class_log' === $_GET['tab'] ) ) ? 'active' : ''; ?>">
+                            <a href="<?php echo esc_url( add_query_arg( 'tab', 'class-log' ) ); ?>">Class Log</a>
                         </li>
                         <li class="gh-nav-item">
                             <a href="<?php echo esc_url( home_url( '/dashboard/announcements/' ) ); ?>">Announcements</a>
@@ -1142,6 +1142,8 @@ function gh_render_analytics_page() {
                     <?php echo gh_render_ops_manager_cohort_delivery_html(); ?>
                 <?php elseif ( $is_student_view ) : ?>
                     <?php echo gh_render_student_weekly_checkin_html(); ?>
+                <?php elseif ( isset( $_GET['tab'] ) && ( 'class-log' === $_GET['tab'] || 'class_log' === $_GET['tab'] ) ) : ?>
+                    <?php echo gh_render_class_log_html(); ?>
                 <?php elseif ( isset( $_GET['tab'] ) && ( 'check-in' === $_GET['tab'] || 'checkin' === $_GET['tab'] ) ) : ?>
                     <?php echo gh_render_learner_checkin_flow(); ?>
                 <?php elseif ( isset( $_GET['tab'] ) && ( 'weekly-report' === $_GET['tab'] || 'weekly_report' === $_GET['tab'] ) ) : ?>
@@ -1149,7 +1151,112 @@ function gh_render_analytics_page() {
                 <?php elseif ( isset( $_GET['tab'] ) && ( 'concern-report' === $_GET['tab'] || 'report-concern' === $_GET['tab'] ) ) : ?>
                     <?php echo gh_render_concern_report_html(); ?>
                 <?php else : ?>
-                <div class="gh-overview-container">
+                
+<style>
+.gh-overview-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    margin-bottom: 24px !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+}
+.gh-overview-top h1 {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #1B1240 !important;
+    margin: 0 0 6px 0 !important;
+}
+.gh-overview-top p {
+    font-family: 'Lato', sans-serif !important;
+    font-size: 14.5px !important;
+    color: #6B6580 !important;
+    margin: 0 !important;
+}
+.gh-header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+}
+.gh-btn-log-class {
+    background: #632FD1 !important;
+    color: #FFFFFF !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    padding: 10px 22px !important;
+    border-radius: 9999px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(99, 47, 209, 0.25) !important;
+}
+.gh-btn-log-class:hover {
+    background: #5224B8 !important;
+    color: #FFFFFF !important;
+}
+.gh-btn-schedule-live {
+    background: #FFFFFF !important;
+    color: #632FD1 !important;
+    border: 1.5px solid #632FD1 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    padding: 8.5px 20px !important;
+    border-radius: 9999px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+}
+.gh-btn-schedule-live:hover {
+    background: #F4F1FB !important;
+    color: #5224B8 !important;
+}
+.gh-stats-row {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    margin-bottom: 28px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+@media (max-width: 1024px) {
+    .gh-canvas-columns {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 20px !important;
+    }
+    .gh-stats-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+    }
+}
+@media (max-width: 768px) {
+    .gh-stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+    }
+    .gh-stats-row .gh-stat-card:last-child {
+        grid-column: span 2 !important;
+    }
+}
+@media (max-width: 480px) {
+    .gh-stats-row {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .gh-stats-row .gh-stat-card:last-child {
+        grid-column: span 1 !important;
+    }
+}
+</style>
+<div class="gh-overview-container">
                     <!-- Top Header -->
                     <div class="gh-analytics-top">
                         <div>
@@ -1477,6 +1584,7 @@ function gh_render_learner_checkin_flow() {
     ?>
     <div class="gh-checkin-wrapper">
         <!-- Preview Screen Switcher for Testing -->
+        <?php if ( isset( $_GET['preview_steps'] ) || isset( $_GET['dev'] ) ) : ?>
         <div class="gh-screen-nav-bar">
             <span class="gh-screen-nav-label"><?php esc_html_e( 'Preview Screen:', 'growth-hub' ); ?></span>
             <button type="button" class="gh-screen-nav-btn <?php echo 'physical' === $class_mode ? 'active' : ''; ?>" onclick="ghSwitchScreen('screen-4a')">4a Physical</button>
@@ -1484,7 +1592,7 @@ function gh_render_learner_checkin_flow() {
             <button type="button" class="gh-screen-nav-btn" onclick="ghSwitchScreen('screen-4c')">4c Pulse</button>
             <button type="button" class="gh-screen-nav-btn" onclick="ghSwitchScreen('screen-4d')">4d Confirmed</button>
         </div>
-
+        <?php endif; ?>
         <div class="gh-mobile-card">
             <!-- Header Bar -->
             <div class="gh-card-header">
@@ -4271,13 +4379,19 @@ function gh_render_ops_manager_cohort_delivery_html() {
             gap: 10px;
         }
         .gh-btn-outline-purple,
-        .gh-btn-solid-purple {
-            flex: 1 1 160px;
-            text-align: center;
-            justify-content: center;
-            padding: 11px 16px;
-            font-size: 13.5px;
-        }
+    .gh-btn-solid-purple {
+        flex: 1 1 auto !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        max-height: 42px !important;
+        line-height: 42px !important;
+        padding: 0 18px !important;
+        font-size: 13.5px !important;
+        text-align: center !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
         .gh-split-grid-2 {
             grid-template-columns: 1fr;
             gap: 18px;
@@ -4306,9 +4420,16 @@ function gh_render_ops_manager_cohort_delivery_html() {
             flex-direction: column;
         }
         .gh-btn-outline-purple,
-        .gh-btn-solid-purple {
-            width: 100%;
-        }
+    .gh-btn-solid-purple {
+        width: 100% !important;
+        flex: none !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        line-height: 44px !important;
+        padding: 0 20px !important;
+        box-sizing: border-box !important;
+    }
         .gh-filter-bar {
             flex-direction: column;
             gap: 12px;
@@ -6202,6 +6323,581 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+</script>
+<?php
+    return ob_get_clean();
+}
+
+
+/**
+ * =========================================================================
+ * BUILD 3: CLASS LOG (Screen 3)
+ * Shortcode: [growth_hub_class_log]
+ * =========================================================================
+ */
+add_shortcode( 'growth_hub_class_log', 'gh_render_class_log_html' );
+function gh_render_class_log_html() {
+    ob_start();
+?>
+<style>
+/**
+ * The Growth Hub Portal - Class Log Specific Styles
+ * Direct match for Figma "Log a Class" screen
+ */
+
+/* Header */
+.gh-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+.gh-header h1 {
+    font-size: 28px;
+    margin-bottom: 4px;
+}
+.gh-header p {
+    font-size: 14px;
+    color: var(--gh-muted);
+    margin: 0;
+}
+.gh-btn-cancel {
+    background: transparent;
+    border: 1.5px solid var(--gh-tint);
+    border-radius: 9999px;
+    padding: 8px 22px;
+    color: var(--gh-purple) !important;
+    font-family: var(--gh-font-h);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+/* Cards */
+.gh-form-card { padding: 32px 36px; }
+.gh-rail-card { padding: 24px 26px; margin-bottom: 24px; }
+
+/* Notice */
+.gh-notice {
+    background: var(--gh-purple-light);
+    color: var(--gh-purple);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    line-height: 1.4;
+}
+
+/* Form Elements */
+.gh-group { margin-bottom: 20px; }
+.gh-label {
+    display: block;
+    font-family: var(--gh-font-h);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--gh-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+/* Clean Single Arrow on Dropdowns */
+.gh-portal-wrapper select.gh-select {
+    width: 100% !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 10px 42px 10px 16px !important;
+    line-height: normal !important;
+    border: 1.5px solid var(--gh-border) !important;
+    border-radius: 8px !important;
+    font-family: var(--gh-font-b) !important;
+    font-size: 14.5px !important;
+    color: var(--gh-text) !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23632FD1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 16px center !important;
+    background-size: 16px 16px !important;
+    cursor: pointer !important;
+}
+
+.gh-portal-wrapper input.gh-input {
+    width: 100% !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 10px 16px !important;
+    line-height: normal !important;
+    border: 1.5px solid var(--gh-border) !important;
+    border-radius: 8px !important;
+    font-family: var(--gh-font-b) !important;
+    font-size: 14.5px !important;
+    color: var(--gh-text) !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.gh-portal-wrapper textarea.gh-textarea {
+    width: 100% !important;
+    min-height: 110px !important;
+    height: auto !important;
+    padding: 12px 16px !important;
+    line-height: 1.5 !important;
+    border: 1.5px solid var(--gh-border) !important;
+    border-radius: 8px !important;
+    font-family: var(--gh-font-b) !important;
+    font-size: 14px !important;
+    color: var(--gh-text) !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.gh-portal-wrapper select.gh-select:focus,
+.gh-portal-wrapper input.gh-input:focus,
+.gh-portal-wrapper textarea.gh-textarea:focus {
+    border-color: var(--gh-purple) !important;
+    box-shadow: 0 0 0 3px rgba(99, 47, 209, 0.12) !important;
+}
+
+.gh-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Pill Toggles */
+.gh-pills { 
+    display: flex; 
+    gap: 12px; 
+    flex-wrap: wrap;
+}
+.gh-pill {
+    padding: 10px 24px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--gh-border);
+    background: #FFF;
+    color: var(--gh-text);
+    font-family: var(--gh-font-h);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s ease;
+    outline: none;
+    text-align: center;
+    white-space: nowrap;
+}
+.gh-pill.active {
+    background: var(--gh-purple) !important;
+    border-color: var(--gh-purple) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(99, 47, 209, 0.2);
+}
+
+/* Form Buttons */
+.gh-actions { 
+    display: flex; 
+    gap: 14px; 
+    margin-top: 32px; 
+    align-items: center;
+}
+.gh-btn-primary {
+    background: var(--gh-purple) !important;
+    color: #FFF !important;
+    border: none !important;
+    border-radius: 9999px !important;
+    padding: 13px 32px !important;
+    font-family: var(--gh-font-h) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+.gh-btn-primary:hover { 
+    background: var(--gh-purple-hover) !important; 
+    transform: translateY(-1px);
+}
+.gh-btn-outline {
+    background: transparent !important;
+    border: 1.5px solid var(--gh-purple) !important;
+    border-radius: 9999px !important;
+    padding: 12px 26px !important;
+    color: var(--gh-purple) !important;
+    font-family: var(--gh-font-h) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    transition: all 0.15s ease;
+}
+.gh-btn-outline:hover {
+    background: var(--gh-purple-light) !important;
+}
+
+/* Right Rail Details */
+.gh-step-list { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 14px; }
+.gh-step-list li { display: flex; gap: 12px; font-size: 13.5px; line-height: 1.45; }
+.gh-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--gh-purple-light); color: var(--gh-purple);
+    font-family: var(--gh-font-h); font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.gh-stat-line {
+    display: flex; justify-content: space-between; padding: 10px 0;
+    border-bottom: 1px solid var(--gh-border); font-size: 14px;
+}
+.gh-stat-line:last-child { border-bottom: none; }
+.gh-stat-line.alert strong { color: #E53935; }
+
+.gh-saved-fields {
+    background: #FFFDF5; border: 1px solid #FFE6A5; border-radius: 8px;
+    padding: 14px 16px; font-size: 12.5px; color: #6B5B2E; line-height: 1.5;
+}
+
+/* ========================================================
+   MOBILE SCREEN PERFECTION (<= 640px)
+   ======================================================== */
+@media (max-width: 640px) {
+    .gh-form-card {
+        padding: 24px 16px !important;
+    }
+
+    /* Transform pill toggles into a balanced 2-column grid */
+    .gh-pills {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    .gh-pill {
+        width: 100% !important;
+        padding: 12px 6px !important;
+        font-size: 12.5px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* Stack Submit and Save Draft into full-width action buttons */
+    .gh-actions {
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
+        margin-top: 24px !important;
+    }
+
+    .gh-btn-primary,
+    .gh-btn-outline {
+        width: 100% !important;
+        display: block !important;
+        padding: 14px 20px !important;
+        font-size: 14.5px !important;
+    }
+
+    .gh-header {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .gh-btn-cancel {
+        align-self: flex-start !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .gh-canvas-columns {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 20px !important;
+    }
+    .gh-grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+}
+
+</style>
+<?php
+/**
+ * Tutor Dashboard - Class Log ("Log a class") Template
+ * Direct match for Figma design
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+$user_id = get_current_user_id();
+if ( class_exists( 'GH_Portal_Class_Log' ) && method_exists( 'GH_Portal_Class_Log', 'get_instructor_courses' ) ) {
+    $courses = GH_Portal_Class_Log::get_instructor_courses( $user_id );
+} else {
+    $courses = get_posts( array( 'post_type' => 'courses', 'post_status' => 'publish', 'posts_per_page' => -1, 'author' => $user_id ) );
+    if ( empty( $courses ) ) {
+        $courses = get_posts( array( 'post_type' => 'courses', 'post_status' => 'publish', 'posts_per_page' => -1 ) );
+    }
+}
+
+if ( class_exists( 'GH_Portal_Class_Log' ) && method_exists( 'GH_Portal_Class_Log', 'get_tutor_week_stats' ) ) {
+    $week_stats = GH_Portal_Class_Log::get_tutor_week_stats( $user_id );
+} else {
+    $week_stats = array( 'delivered' => 0, 'planned' => 0, 'attendance_rate' => 0 );
+}
+$cancel_url = function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_url() : home_url( '/dashboard/' );
+?>
+
+<div class="gh-canvas-columns">
+    <!-- Center Form Column -->
+    <div>
+        <div class="gh-header">
+            <div>
+                <h1><?php esc_html_e( 'Log a class', 'growth-hub' ); ?></h1>
+                <p><?php esc_html_e( 'Takes about 30 seconds. Log each class within 24 hours of delivering it.', 'growth-hub' ); ?></p>
+            </div>
+            <a href="<?php echo esc_url( $cancel_url ); ?>" class="gh-btn-cancel"><?php esc_html_e( 'Cancel', 'growth-hub' ); ?></a>
+        </div>
+
+        <?php if ( isset( $_GET['gh_success'] ) ) : ?>
+            <div class="gh-notice" style="background:#E8F5E9; color:#2E7D32;">
+                <?php esc_html_e( 'Class log submitted successfully! Attendance check-in is now open for your learners.', 'growth-hub' ); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ( isset( $_GET['gh_error'] ) ) : ?>
+            <div class="gh-notice" style="background:#ffebee; color:#c62828;">
+                <?php echo esc_html( urldecode( $_GET['gh_error'] ) ); ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="gh-card gh-form-card">
+            <h2 style="font-size:18px; margin-bottom:16px;"><?php esc_html_e( 'Class details', 'growth-hub' ); ?></h2>
+            <div class="gh-notice">
+                <?php esc_html_e( 'Prefilled from your scheduled live class. Change anything that differs from what happened.', 'growth-hub' ); ?>
+            </div>
+
+            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+                <input type="hidden" name="action" value="gh_submit_class_log">
+                <input type="hidden" name="status" value="publish">
+                <?php wp_nonce_field( 'gh_save_class_log', 'gh_log_nonce' ); ?>
+                <input type="hidden" name="mode" id="gh_f_mode" value="virtual">
+                <input type="hidden" name="is_planned" id="gh_f_planned" value="1">
+
+                <div class="gh-group">
+                    <label class="gh-label"><?php esc_html_e( 'Course', 'growth-hub' ); ?></label>
+                    <select name="course_id" class="gh-select">
+                        <?php if ( ! empty( $courses ) ) : ?>
+                            <?php foreach ( $courses as $c ) : ?>
+                                <option value="<?php echo esc_attr( $c->ID ); ?>"><?php echo esc_html( $c->post_title ); ?></option>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <option value="0"><?php esc_html_e( 'No courses available', 'growth-hub' ); ?></option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+
+                <div class="gh-row-2">
+                    <div class="gh-group">
+                        <label class="gh-label"><?php esc_html_e( 'Cohort', 'growth-hub' ); ?></label>
+                        <?php
+                        $form_cohorts = array();
+                        if ( ! empty( $courses ) ) {
+                            foreach ( $courses as $c ) {
+                                $c_coh = get_post_meta( $c->ID, '_gh_cohort', true );
+                                if ( $c_coh && ! in_array( $c_coh, $form_cohorts, true ) ) {
+                                    $form_cohorts[] = $c_coh;
+                                }
+                                $c_cohs = get_post_meta( $c->ID, '_gh_cohorts', true );
+                                if ( is_array( $c_cohs ) ) {
+                                    foreach ( $c_cohs as $cc ) {
+                                        if ( $cc && ! in_array( $cc, $form_cohorts, true ) ) {
+                                            $form_cohorts[] = $cc;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if ( empty( $form_cohorts ) ) {
+                            $form_cohorts = array( __( 'Active Cohort', 'growth-hub' ) );
+                        }
+                        ?>
+                        <select name="cohort" class="gh-select">
+                            <?php foreach ( $form_cohorts as $f_coh ) : ?>
+                                <option value="<?php echo esc_attr( $f_coh ); ?>"><?php echo esc_html( $f_coh ); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="gh-group">
+                        <label class="gh-label"><?php esc_html_e( 'Week', 'growth-hub' ); ?></label>
+                        <select name="week_number" class="gh-select">
+                            <?php for ( $w = 1; $w <= 12; $w++ ) : ?>
+                                <option value="Week <?php echo $w; ?> of 12" <?php selected( $w, 1 ); ?>>Week <?php echo $w; ?> of 12</option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="gh-row-2">
+                    <div class="gh-group">
+                        <label class="gh-label"><?php esc_html_e( 'Date', 'growth-hub' ); ?></label>
+                        <input type="date" name="class_date" class="gh-input" value="<?php echo date( 'Y-m-d' ); ?>">
+                    </div>
+                    <div class="gh-group">
+                        <label class="gh-label"><?php esc_html_e( 'Duration (Minutes)', 'growth-hub' ); ?></label>
+                        <input type="number" name="duration" class="gh-input" value="90">
+                    </div>
+                </div>
+
+                <div class="gh-group">
+                    <label class="gh-label"><?php esc_html_e( 'Mode', 'growth-hub' ); ?></label>
+                    <div class="gh-pills" id="gh-pills-mode">
+                        <button type="button" class="gh-pill" data-val="physical"><?php esc_html_e( 'Physical', 'growth-hub' ); ?></button>
+                        <button type="button" class="gh-pill active" data-val="virtual"><?php esc_html_e( 'Virtual', 'growth-hub' ); ?></button>
+                    </div>
+                </div>
+
+                <div class="gh-group">
+                    <label class="gh-label"><?php esc_html_e( 'Was this class planned?', 'growth-hub' ); ?></label>
+                    <div class="gh-pills" id="gh-pills-planned">
+                        <button type="button" class="gh-pill active" data-val="1"><?php esc_html_e( 'Planned in schedule', 'growth-hub' ); ?></button>
+                        <button type="button" class="gh-pill" data-val="0"><?php esc_html_e( 'Extra class', 'growth-hub' ); ?></button>
+                    </div>
+                </div>
+
+                <div class="gh-group">
+                    <label class="gh-label"><?php esc_html_e( 'Topic Covered', 'growth-hub' ); ?></label>
+                    <input type="text" name="topic" class="gh-input" placeholder="<?php esc_attr_e( 'e.g. Introduction to Responsive Layouts', 'growth-hub' ); ?>" required>
+                </div>
+
+                <div class="gh-group">
+                    <label class="gh-label"><?php esc_html_e( 'Notes for the ops and bd manager (Optional)', 'growth-hub' ); ?></label>
+                    <textarea name="notes" rows="4" class="gh-textarea" placeholder="<?php esc_attr_e( 'Two learners joined late because of data issues...', 'growth-hub' ); ?>"></textarea>
+                </div>
+
+                <div class="gh-actions">
+                    <button type="submit" name="submit_action" value="publish" class="gh-btn-primary"><?php esc_html_e( 'Submit class log', 'growth-hub' ); ?></button>
+                    <button type="submit" name="submit_action" value="draft" class="gh-btn-outline"><?php esc_html_e( 'Save draft', 'growth-hub' ); ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right Column Rail -->
+    <div>
+        <div class="gh-card gh-rail-card">
+            <h3 style="font-size:16px; margin-bottom:16px;"><?php esc_html_e( 'What happens after you submit', 'growth-hub' ); ?></h3>
+            <ul class="gh-step-list">
+                <li><span class="gh-num">1</span> <?php esc_html_e( 'Learners get a one-tap check-in and a two-question pulse for this class.', 'growth-hub' ); ?></li>
+                <li><span class="gh-num">2</span> <?php esc_html_e( 'Attendance is counted from learner check-ins and Zoom reports, not from you.', 'growth-hub' ); ?></li>
+                <li><span class="gh-num">3</span> <?php esc_html_e( 'Your class counts toward this week\'s delivered vs planned score.', 'growth-hub' ); ?></li>
+                <li><span class="gh-num">4</span> <?php esc_html_e( 'The Ops and BD Manager sees it in the Cohort Delivery view.', 'growth-hub' ); ?></li>
+            </ul>
+        </div>
+
+        <div class="gh-card gh-rail-card">
+            <h3 style="font-size:16px; margin-bottom:16px;"><?php esc_html_e( 'Your week so far', 'growth-hub' ); ?></h3>
+            <div class="gh-stat-line"><span><?php esc_html_e( 'Classes planned', 'growth-hub' ); ?></span> <strong><?php echo esc_html( $week_stats['planned'] ); ?></strong></div>
+            <div class="gh-stat-line"><span><?php esc_html_e( 'Classes logged', 'growth-hub' ); ?></span> <strong><?php echo esc_html( $week_stats['logged'] ); ?></strong></div>
+            <div class="gh-stat-line alert"><span><?php esc_html_e( 'Still to log', 'growth-hub' ); ?></span> <strong><?php echo esc_html( $week_stats['still'] ); ?></strong></div>
+        </div>
+
+        <div class="gh-card gh-rail-card" style="background: #FDFCFE; border: 1.5px solid #D8D2EE;">
+            <h3 style="font-size:15px; margin-bottom:8px; color:#1B1240;"><?php esc_html_e( 'Live Hub Check-in', 'growth-hub' ); ?></h3>
+            <p style="font-size:12px; color:#6B7280; line-height:1.4; margin-bottom:14px;">
+                <?php esc_html_e( 'Delivering an in-person class? Project the QR code on your screen for learners to scan with their phones.', 'growth-hub' ); ?>
+            </p>
+            <button type="button" class="gh-btn-primary" style="width:100%; padding:10px 14px; font-size:13px; margin-bottom:8px;" onclick="ghOpenProjectorModal()">
+                <?php esc_html_e( 'Project Class QR Code', 'growth-hub' ); ?>
+            </button>
+            <button type="button" class="gh-btn-outline" style="width:100%; padding:9px 14px; font-size:12.5px;" onclick="ghCopyCheckinLink()">
+                <?php esc_html_e( 'Copy Check-in Link', 'growth-hub' ); ?>
+            </button>
+        </div>
+
+        <div class="gh-saved-fields">
+            <strong style="display:block; margin-bottom:4px;"><?php esc_html_e( 'Saved fields', 'growth-hub' ); ?></strong>
+            <?php esc_html_e( 'Tutor, course, cohort, week number, date, mode, planned or extra, duration, topic, notes, logged at.', 'growth-hub' ); ?>
+        </div>
+    </div>
+</div>
+
+<!-- Projector Fullscreen QR Code Modal for In-Person Classes -->
+<div id="gh-projector-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(27,18,64,0.85); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#FFFFFF; border-radius:24px; padding:32px 28px; max-width:440px; width:100%; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.3); position:relative;">
+        <button type="button" onclick="ghCloseProjectorModal()" style="position:absolute; top:16px; right:18px; background:transparent; border:none; font-size:26px; color:#6B7280; cursor:pointer;">&times;</button>
+        
+        <span style="background:#F4F1FB; color:#632FD1; font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; padding:4px 12px; border-radius:9999px; text-transform:uppercase;">
+            <?php esc_html_e( 'Classroom Check-in', 'growth-hub' ); ?>
+        </span>
+        
+        <h2 style="font-size:20px; font-weight:700; color:#1B1240; margin:16px 0 6px; font-family:'Poppins',sans-serif;">
+            <?php esc_html_e( 'Scan to Check in', 'growth-hub' ); ?>
+        </h2>
+        <p style="font-size:13px; color:#6B7280; margin:0 0 20px;">
+            <?php esc_html_e( 'Open your phone camera or QR scanner and point it at the code below.', 'growth-hub' ); ?>
+        </p>
+
+        <div style="width:200px; height:200px; margin:0 auto 18px; border:2px solid #1B1240; border-radius:16px; display:flex; align-items:center; justify-content:center; padding:10px; background:#FFFFFF;">
+            <img id="gh-proj-qr-img" src="" alt="Live QR Code" width="180" height="180" style="display:block;">
+        </div>
+
+        <p id="gh-proj-url-disp" style="font-size:11.5px; color:#632FD1; word-break:break-all; margin:0 0 20px; font-weight:600;"></p>
+
+        <button type="button" class="gh-btn-primary" style="width:100%; padding:12px;" onclick="ghCloseProjectorModal()">
+            <?php esc_html_e( 'Done / Close Screen', 'growth-hub' ); ?>
+        </button>
+    </div>
+</div>
+
+<script>
+function ghGetLiveCheckinUrl() {
+    var courseSel = document.querySelector('select[name="course_id"]');
+    var courseId = courseSel ? courseSel.value : '1';
+    var baseUrl = <?php echo json_encode( home_url( '/check-in/' ) ); ?>;
+    return baseUrl + '?class_id=' + courseId + '&step=physical';
+}
+
+function ghOpenProjectorModal() {
+    var url = ghGetLiveCheckinUrl();
+    var qrImg = document.getElementById('gh-proj-qr-img');
+    var urlDisp = document.getElementById('gh-proj-url-disp');
+    var modal = document.getElementById('gh-projector-modal');
+    if (qrImg) {
+        qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&color=1B1240&data=' + encodeURIComponent(url);
+    }
+    if (urlDisp) {
+        urlDisp.innerText = url;
+    }
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function ghCloseProjectorModal() {
+    var modal = document.getElementById('gh-projector-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function ghCopyCheckinLink() {
+    var url = ghGetLiveCheckinUrl();
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function() {
+            alert('Check-in link copied to clipboard!\n' + url);
+        });
+    } else {
+        prompt('Copy this check-in link:', url);
+    }
+}
 </script>
 <?php
     return ob_get_clean();
