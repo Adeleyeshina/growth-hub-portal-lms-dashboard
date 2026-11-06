@@ -1,0 +1,276 @@
+/**
+ * The Growth Hub Portal - Class Log Specific Styles
+ * Direct match for Figma "Log a Class" screen
+ */
+
+/* Header */
+.gh-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+.gh-header h1 {
+    font-size: 28px;
+    margin-bottom: 4px;
+}
+.gh-header p {
+    font-size: 14px;
+    color: var(--gh-muted);
+    margin: 0;
+}
+.gh-btn-cancel {
+    background: transparent;
+    border: 1.5px solid var(--gh-tint);
+    border-radius: 9999px;
+    padding: 8px 22px;
+    color: var(--gh-purple) !important;
+    font-family: var(--gh-font-h);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+/* Cards */
+.gh-form-card { padding: 32px 36px; }
+.gh-rail-card { padding: 24px 26px; margin-bottom: 24px; }
+
+/* Notice */
+.gh-notice {
+    background: var(--gh-purple-light);
+    color: var(--gh-purple);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    line-height: 1.4;
+}
+
+/* Form Elements */
+.gh-group { margin-bottom: 20px; }
+.gh-label {
+    display: block;
+    font-family: var(--gh-font-h);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--gh-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+/* Clean Single Arrow on Dropdowns */
+.gh-portal-wrapper select.gh-select {
+    width: 100% !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 10px 42px 10px 16px !important;
+    line-height: normal !important;
+    border: 1.5px solid var(--gh-border) !important;
+    border-radius: 8px !important;
+    font-family: var(--gh-font-b) !important;
+    font-size: 14.5px !important;
+    color: var(--gh-text) !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23632FD1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 16px center !important;
+    background-size: 16px 16px !important;
+    cursor: pointer !important;
+}
+
+.gh-portal-wrapper input.gh-input {
+    width: 100% !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 10px 16px !important;
+    line-height: normal !important;
+    border: 1.5px solid var(--gh-border) !important;
+    border-radius: 8px !important;
+    font-family: var(--gh-font-b) !important;
+    font-size: 14.5px !important;
+    color: var(--gh-text) !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.gh-portal-wrapper textarea.gh-textarea {
+    width: 100% !important;
+    min-height: 110px !important;
+    height: auto !important;
+    padding: 12px 16px !important;
+    line-height: 1.5 !important;
+    border: 1.5px solid var(--gh-border) !important;
+    border-radius: 8px !important;
+    font-family: var(--gh-font-b) !important;
+    font-size: 14px !important;
+    color: var(--gh-text) !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.gh-portal-wrapper select.gh-select:focus,
+.gh-portal-wrapper input.gh-input:focus,
+.gh-portal-wrapper textarea.gh-textarea:focus {
+    border-color: var(--gh-purple) !important;
+    box-shadow: 0 0 0 3px rgba(99, 47, 209, 0.12) !important;
+}
+
+.gh-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Pill Toggles */
+.gh-pills { 
+    display: flex; 
+    gap: 12px; 
+    flex-wrap: wrap;
+}
+.gh-pill {
+    padding: 10px 24px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--gh-border);
+    background: #FFF;
+    color: var(--gh-text);
+    font-family: var(--gh-font-h);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s ease;
+    outline: none;
+    text-align: center;
+    white-space: nowrap;
+}
+.gh-pill.active {
+    background: var(--gh-purple) !important;
+    border-color: var(--gh-purple) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(99, 47, 209, 0.2);
+}
+
+/* Form Buttons */
+.gh-actions { 
+    display: flex; 
+    gap: 14px; 
+    margin-top: 32px; 
+    align-items: center;
+}
+.gh-btn-primary {
+    background: var(--gh-purple) !important;
+    color: #FFF !important;
+    border: none !important;
+    border-radius: 9999px !important;
+    padding: 13px 32px !important;
+    font-family: var(--gh-font-h) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+.gh-btn-primary:hover { 
+    background: var(--gh-purple-hover) !important; 
+    transform: translateY(-1px);
+}
+.gh-btn-outline {
+    background: transparent !important;
+    border: 1.5px solid var(--gh-purple) !important;
+    border-radius: 9999px !important;
+    padding: 12px 26px !important;
+    color: var(--gh-purple) !important;
+    font-family: var(--gh-font-h) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    transition: all 0.15s ease;
+}
+.gh-btn-outline:hover {
+    background: var(--gh-purple-light) !important;
+}
+
+/* Right Rail Details */
+.gh-step-list { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 14px; }
+.gh-step-list li { display: flex; gap: 12px; font-size: 13.5px; line-height: 1.45; }
+.gh-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--gh-purple-light); color: var(--gh-purple);
+    font-family: var(--gh-font-h); font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.gh-stat-line {
+    display: flex; justify-content: space-between; padding: 10px 0;
+    border-bottom: 1px solid var(--gh-border); font-size: 14px;
+}
+.gh-stat-line:last-child { border-bottom: none; }
+.gh-stat-line.alert strong { color: #E53935; }
+
+.gh-saved-fields {
+    background: #FFFDF5; border: 1px solid #FFE6A5; border-radius: 8px;
+    padding: 14px 16px; font-size: 12.5px; color: #6B5B2E; line-height: 1.5;
+}
+
+/* ========================================================
+   MOBILE SCREEN PERFECTION (<= 640px)
+   ======================================================== */
+@media (max-width: 640px) {
+    .gh-form-card {
+        padding: 24px 16px !important;
+    }
+
+    /* Transform pill toggles into a balanced 2-column grid */
+    .gh-pills {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    .gh-pill {
+        width: 100% !important;
+        padding: 12px 6px !important;
+        font-size: 12.5px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* Stack Submit and Save Draft into full-width action buttons */
+    .gh-actions {
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
+        margin-top: 24px !important;
+    }
+
+    .gh-btn-primary,
+    .gh-btn-outline {
+        width: 100% !important;
+        display: block !important;
+        padding: 14px 20px !important;
+        font-size: 14.5px !important;
+    }
+
+    .gh-header {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .gh-btn-cancel {
+        align-self: flex-start !important;
+    }
+}
