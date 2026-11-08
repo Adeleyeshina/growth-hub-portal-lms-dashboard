@@ -272,7 +272,7 @@ for ( $w = max( 1, $active_week - 1 ); $w >= max( 1, $active_week - 5 ); $w-- ) 
     );
 }
 
-$cancel_url = function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_url() : home_url( '/dashboard/' );
+$cancel_url = function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url() : home_url( '/dashboard/' );
 ?>
 
 <div class="gh-report-wrapper">
@@ -499,8 +499,9 @@ $cancel_url = function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_
  * ========================================================================= */
 .gh-report-wrapper {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1320px;
     margin: 0 auto;
+    padding-bottom: 60px;
     min-width: 0;
     box-sizing: border-box;
     font-family: var(--gh-font-b, 'Lato', sans-serif);

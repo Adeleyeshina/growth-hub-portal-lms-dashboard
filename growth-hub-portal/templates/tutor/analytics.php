@@ -639,7 +639,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (csv.length <= 1) {
-                alert('No learner records available to export.');
+                if (typeof ghToast === 'function') {
+                    ghToast('No learner records available to export.', 'info');
+                }
                 return;
             }
 

@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $user_id = get_current_user_id();
 $courses = GH_Portal_Class_Log::get_instructor_courses( $user_id );
 $week_stats = GH_Portal_Class_Log::get_tutor_week_stats( $user_id );
-$cancel_url = function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_url() : home_url( '/dashboard/' );
+$cancel_url = function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url() : home_url( '/dashboard/' );
 ?>
 
 <div class="gh-canvas-columns">
@@ -249,10 +249,14 @@ function ghCopyCheckinLink() {
     var url = ghGetLiveCheckinUrl();
     if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(function() {
-            alert('Check-in link copied to clipboard!\n' + url);
+            if (typeof ghToast === 'function') {
+                ghToast('Check-in link copied to clipboard!');
+            }
         });
     } else {
-        prompt('Copy this check-in link:', url);
+        if (typeof ghToast === 'function') {
+            ghToast('Check-in URL: ' + url, 'info');
+        }
     }
 }
 </script>

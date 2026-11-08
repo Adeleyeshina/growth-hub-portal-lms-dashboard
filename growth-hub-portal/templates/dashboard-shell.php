@@ -6,6 +6,10 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
+if ( function_exists( 'show_admin_bar' ) ) {
+    show_admin_bar( false );
+}
 ?>
 
 <div class="gh-portal-wrapper">
@@ -50,8 +54,24 @@ if ( ! defined( 'ABSPATH' ) ) {
                 include GH_PORTAL_PATH . 'templates/tutor/concern-report.php';
             } elseif ( 'class-log' === $endpoint ) {
                 include GH_PORTAL_PATH . 'templates/tutor/class-log.php';
+            } elseif ( 'live-classes' === $endpoint || 'live_classes' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/live-classes.php';
+            } elseif ( 'announcements' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/announcements.php';
+            } elseif ( 'question-answer' === $endpoint || 'discussions' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/discussions.php';
+            } elseif ( 'grading' === $endpoint || 'grades' === $endpoint || 'assignments' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/grading.php';
+            } elseif ( 'mentees' === $endpoint || 'students' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/mentees.php';
+            } elseif ( 'my-courses' === $endpoint || 'my_courses' === $endpoint || 'courses' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/my-courses.php';
+            } elseif ( 'my-certificates' === $endpoint || 'certificates' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/my-certificates.php';
             } elseif ( 'analytics' === $endpoint ) {
                 include GH_PORTAL_PATH . 'templates/tutor/analytics.php';
+            } elseif ( 'earning' === $endpoint || 'earnings' === $endpoint ) {
+                include GH_PORTAL_PATH . 'templates/tutor/earnings.php';
             } elseif ( 'check-in' === $endpoint || 'checkin' === $endpoint ) {
                 include GH_PORTAL_PATH . 'templates/learner/checkin.php';
             } elseif ( 'index' === $endpoint || empty( $endpoint ) || 'overview' === $endpoint || 'dashboard' === $endpoint ) {

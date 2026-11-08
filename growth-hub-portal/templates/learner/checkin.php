@@ -297,7 +297,7 @@ $ajax_url = admin_url( 'admin-ajax.php' );
                 <div class="gh-next-sub"><?php esc_html_e( 'Week 6 task due Friday', 'growth-hub' ); ?></div>
             </div>
 
-            <a href="<?php echo esc_url( function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_url() : home_url( '/dashboard/' ) ); ?>" class="gh-btn-primary-purple" style="display:block; text-decoration:none; text-align:center;">
+            <a href="<?php echo esc_url( function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url() : home_url( '/dashboard/' ) ); ?>" class="gh-btn-primary-purple" style="display:block; text-decoration:none; text-align:center;">
                 <?php esc_html_e( 'See my weekly progress', 'growth-hub' ); ?>
             </a>
         </div>
@@ -873,7 +873,9 @@ function ghToggleAbsenceModal(show) {
 function ghSubmitAbsenceReason() {
     var reason = document.getElementById('gh-absence-reason-text') ? document.getElementById('gh-absence-reason-text').value.trim() : '';
     if (!reason) {
-        alert('Please write a brief reason.');
+        if (typeof ghToast === 'function') {
+            ghToast('Please write a brief reason.', 'error');
+        }
         return;
     }
 
@@ -889,11 +891,15 @@ function ghSubmitAbsenceReason() {
     })
     .then(function(res) { return res.json(); })
     .then(function(json) {
-        alert('Thank you, your note has been logged with the Ops and BD Manager.');
+        if (typeof ghToast === 'function') {
+            ghToast('Thank you, your note has been logged with the Ops and BD Manager.');
+        }
         ghToggleAbsenceModal(false);
     })
     .catch(function(err) {
-        alert('Thank you, your note has been logged.');
+        if (typeof ghToast === 'function') {
+            ghToast('Thank you, your note has been logged.');
+        }
         ghToggleAbsenceModal(false);
     });
 }

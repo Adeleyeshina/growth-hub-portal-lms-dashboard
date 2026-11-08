@@ -185,8 +185,8 @@ if ( ! empty( $course_ids ) ) {
     }
 }
 
-$dash_url = function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_url() : home_url( '/dashboard/' );
-$log_class_url = trailingslashit( $dash_url ) . 'class-log';
+$dash_url = function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url() : ( function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_url() : home_url( '/dashboard/' ) );
+$log_class_url = function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url( 'class-log' ) : trailingslashit( $dash_url ) . 'class-log';
 ?>
 
 <style>
@@ -494,7 +494,7 @@ $log_class_url = trailingslashit( $dash_url ) . 'class-log';
             <a href="<?php echo esc_url( $log_class_url ); ?>" class="gh-btn-log-class">
                 + <?php esc_html_e( 'Log Class', 'growth-hub' ); ?>
             </a>
-            <a href="<?php echo esc_url( home_url( '/dashboard/live-classes/' ) ); ?>" class="gh-btn-schedule-live">
+            <a href="<?php echo esc_url( function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url( 'live-classes' ) : home_url( '/dashboard/?tab=live-classes' ) ); ?>" class="gh-btn-schedule-live">
                 + <?php esc_html_e( 'Schedule Live Class', 'growth-hub' ); ?>
             </a>
         </div>
@@ -612,7 +612,7 @@ $log_class_url = trailingslashit( $dash_url ) . 'class-log';
     <div class="gh-section-card">
         <div class="gh-card-top-bar">
             <h2><?php esc_html_e( 'My Courses', 'growth-hub' ); ?></h2>
-            <a href="<?php echo esc_url( home_url( '/dashboard/my-courses/' ) ); ?>" class="gh-link-manage"><?php esc_html_e( 'Manage in Tutor LMS &rarr;', 'growth-hub' ); ?></a>
+            <a href="<?php echo esc_url( function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url( 'my-courses' ) : home_url( '/dashboard/?tab=my-courses' ) ); ?>" class="gh-link-manage"><?php esc_html_e( 'Manage in Tutor LMS &rarr;', 'growth-hub' ); ?></a>
         </div>
         <div class="gh-table-wrap">
             <table class="gh-table">
@@ -654,7 +654,7 @@ $log_class_url = trailingslashit( $dash_url ) . 'class-log';
     <div class="gh-section-card">
         <div class="gh-card-top-bar">
             <h2><?php esc_html_e( 'Pending Actions', 'growth-hub' ); ?></h2>
-            <a href="<?php echo esc_url( home_url( '/dashboard/grading/' ) ); ?>" class="gh-link-manage"><?php esc_html_e( 'View all in Tutor LMS &rarr;', 'growth-hub' ); ?></a>
+            <a href="<?php echo esc_url( function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url( 'grading' ) : home_url( '/dashboard/?tab=grading' ) ); ?>" class="gh-link-manage"><?php esc_html_e( 'View all in Tutor LMS &rarr;', 'growth-hub' ); ?></a>
         </div>
         <div class="gh-table-wrap">
             <table class="gh-table">
@@ -678,7 +678,7 @@ $log_class_url = trailingslashit( $dash_url ) . 'class-log';
                                 <td><span class="gh-pill-badge gh-badge-quiz">Quiz</span></td>
                                 <td><strong><?php echo esc_html( $st_user ? $st_user->display_name : 'Student' ); ?></strong></td>
                                 <td><?php echo esc_html( get_the_title( $att->quiz_id ) ); ?></td>
-                                <td><a href="<?php echo esc_url( home_url( '/dashboard/grading/' ) ); ?>" class="gh-action-link"><?php esc_html_e( 'Review &rarr;', 'growth-hub' ); ?></a></td>
+                                <td><a href="<?php echo esc_url( function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url( 'grading' ) : home_url( '/dashboard/?tab=grading' ) ); ?>" class="gh-action-link"><?php esc_html_e( 'Review &rarr;', 'growth-hub' ); ?></a></td>
                             </tr>
                         <?php endforeach;
                     endif; 
@@ -690,7 +690,7 @@ $log_class_url = trailingslashit( $dash_url ) . 'class-log';
                                 <td><span class="gh-pill-badge gh-badge-qa">Q&A</span></td>
                                 <td><strong><?php echo esc_html( $qa->comment_author ); ?></strong></td>
                                 <td><?php echo esc_html( wp_trim_words( $qa->comment_content, 10 ) ); ?></td>
-                                <td><a href="<?php echo esc_url( home_url( '/dashboard/question-answer/' ) ); ?>" class="gh-action-link"><?php esc_html_e( 'Review &rarr;', 'growth-hub' ); ?></a></td>
+                                <td><a href="<?php echo esc_url( function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url( 'question-answer' ) : home_url( '/dashboard/?tab=question-answer' ) ); ?>" class="gh-action-link"><?php esc_html_e( 'Review &rarr;', 'growth-hub' ); ?></a></td>
                             </tr>
                         <?php endforeach;
                     endif; 

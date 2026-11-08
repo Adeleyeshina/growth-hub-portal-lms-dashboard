@@ -284,8 +284,9 @@ $cancel_url = add_query_arg( 'tab', 'weekly-report' );
  * ========================================================================= */
 .gh-concern-wrapper {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1320px;
     margin: 0 auto;
+    padding-bottom: 60px;
     min-width: 0;
     box-sizing: border-box;
     font-family: var(--gh-font-b, 'Lato', sans-serif);

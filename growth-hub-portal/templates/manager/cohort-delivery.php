@@ -837,11 +837,11 @@ $at_risk_count = count( $at_risk_learners );
                                 <td style="color:#6B7280; font-size:13px;"><?php echo esc_html( $rep['received'] ); ?></td>
                                 <td>
                                     <?php if ( 'urgent' === $rep['action_type'] ) : ?>
-                                        <button type="button" class="gh-btn-action-urgent" onclick="alert('Reviewing urgent case: <?php echo esc_js( $rep['summary'] ); ?>');">
+                                        <button type="button" class="gh-btn-action-urgent" onclick="ghToast('Reviewing urgent case: <?php echo esc_js( $rep['summary'] ); ?>', 'error');">
                                             <?php echo esc_html( $rep['action'] ); ?>
                                         </button>
                                     <?php else : ?>
-                                        <button type="button" class="gh-btn-action-purple" onclick="alert('Opening: <?php echo esc_js( $rep['summary'] ); ?>');">
+                                        <button type="button" class="gh-btn-action-purple" onclick="ghToast('Opening: <?php echo esc_js( $rep['summary'] ); ?>', 'info');">
                                             <?php echo esc_html( $rep['action'] ); ?>
                                         </button>
                                     <?php endif; ?>
@@ -866,7 +866,8 @@ $at_risk_count = count( $at_risk_learners );
 /* Base Container - Prevents Grid & Page Blowout */
 .gh-manager-container {
     width: 100%;
-    max-width: 1240px;
+    max-width: 1320px;
+    padding-bottom: 60px;
     margin: 0 auto;
     min-width: 0;
     box-sizing: border-box;
@@ -1323,10 +1324,14 @@ $at_risk_count = count( $at_risk_learners );
 
 <script>
 function ghShareWithSponsors() {
-    alert('Share with sponsors link generated! A read-only summary pack has been copied to your clipboard.');
+    if (typeof ghToast === 'function') {
+        ghToast('Share with sponsors link generated! Read-only summary pack copied.');
+    }
 }
 
 function ghExportWeeklyPack() {
-    alert('Exporting weekly pack for Week <?php echo esc_js( $selected_week ); ?>... CSV reports and attendance logs downloading.');
+    if (typeof ghToast === 'function') {
+        ghToast('Exporting weekly pack for Week <?php echo esc_js( $selected_week ); ?>...', 'info');
+    }
 }
 </script>

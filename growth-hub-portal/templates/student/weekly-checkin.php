@@ -655,12 +655,16 @@ function ghSubmitModalPulse() {
     })
     .then(function(res) { return res.json(); })
     .then(function(json) {
-        alert('Thank you! Your weekly rating has been recorded.');
+        if (typeof ghToast === 'function') {
+            ghToast('Thank you! Your weekly rating has been recorded.');
+        }
         ghClosePulseModal();
         location.reload();
     })
     .catch(function(err) {
-        alert('Thank you! Your feedback has been received.');
+        if (typeof ghToast === 'function') {
+            ghToast('Thank you! Your feedback has been received.');
+        }
         ghClosePulseModal();
     });
 }

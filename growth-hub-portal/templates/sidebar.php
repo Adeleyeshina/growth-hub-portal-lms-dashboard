@@ -15,7 +15,25 @@ $user_id = $user->ID;
 $is_admin = current_user_can( 'administrator' );
 $is_tutor = GH_Portal_Roles::is_tutor( $user_id );
 
-$dash_url = function_exists( 'tutor_utils' ) ? tutor_utils()->tutor_dashboard_url() : home_url( '/dashboard/' );
+// 1. Resolve Canonical Dashboard URL (always anchored to /dashboard/ portal route)
+$dash_url = function_exists( 'gh_portal_dashboard_url' ) ? gh_portal_dashboard_url() : home_url( '/dashboard/' );
+
+// Helper to build reliable internal tab URLs that stay on the Growth Hub dashboard
+if ( ! function_exists( 'gh_portal_nav_link' ) ) {
+    function gh_portal_nav_link( $tab, $base_url = '', $extra = array() ) {
+        if ( function_exists( 'gh_portal_dashboard_url' ) ) {
+            return gh_portal_dashboard_url( $tab, $extra );
+        }
+        $clean_base = strtok( $base_url ? $base_url : home_url( '/dashboard/' ), '?' );
+        $clean_base = trailingslashit( $clean_base );
+        if ( 'index' === $tab || 'overview' === $tab || empty( $tab ) ) {
+            return empty( $extra ) ? $clean_base : add_query_arg( $extra, $clean_base );
+        }
+        $args = array_merge( array( 'tab' => $tab ), $extra );
+        return add_query_arg( $args, $clean_base );
+    }
+}
+
 $current_endpoint = 'index';
 if ( isset( $_GET['tab'] ) && ! empty( $_GET['tab'] ) ) {
     $current_endpoint = sanitize_text_field( $_GET['tab'] );
@@ -82,49 +100,49 @@ if ( $is_manager_view ) {
             <!-- OPS AND BD MANAGER NAVIGATION (Figma Build 6)        -->
             <!-- ==================================================== -->
             <li class="gh-nav-item <?php echo ( 'overview' === $current_endpoint ) ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'overview' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'overview', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Overview', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo ( 'cohort-delivery' === $current_endpoint || 'cohort_delivery' === $current_endpoint || empty( $current_endpoint ) || 'index' === $current_endpoint ) ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'cohort-delivery' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'cohort-delivery', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Cohort Delivery', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'tutors' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'tutors' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'tutors', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Tutors', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'learners' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'learners' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'learners', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Learners', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'weekly-reports' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'weekly-reports' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'weekly-reports', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Weekly Reports', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'support-requests' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'support-requests' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'support-requests', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Support Requests', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'sponsors' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'sponsors' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'sponsors', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Sponsors', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'payments' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'manager', 'tab' => 'payments' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'payments', $dash_url, array( 'view' => 'manager' ) ) ); ?>">
                     <?php esc_html_e( 'Payments', 'growth-hub' ); ?>
                 </a>
             </li>
@@ -134,43 +152,43 @@ if ( $is_manager_view ) {
             <!-- STUDENT NAVIGATION (Figma Build 5)            -->
             <!-- ============================================== -->
             <li class="gh-nav-item <?php echo ( 'index' === $current_endpoint || 'dashboard' === $current_endpoint || 'student-dashboard' === $current_endpoint ) ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'index', $dash_url, array( 'view' => 'student' ) ) ); ?>">
                     <?php esc_html_e( 'Dashboard', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo ( 'my-courses' === $current_endpoint || 'enrolled-courses' === $current_endpoint ) ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'my-courses' ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'my-courses', $dash_url, array( 'view' => 'student' ) ) ); ?>">
                     <?php esc_html_e( 'My Courses', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo ( 'weekly-check-in' === $current_endpoint || 'weekly-checkin' === $current_endpoint ) ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( 'tab', 'weekly-check-in', $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'weekly-check-in', $dash_url, array( 'view' => 'student' ) ) ); ?>">
                     <?php esc_html_e( 'Weekly Check-in', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'assignments' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'assignments' ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'assignments', $dash_url, array( 'view' => 'student' ) ) ); ?>">
                     <?php esc_html_e( 'Assignments', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'my-certificates' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'my-certificates' ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'my-certificates', $dash_url, array( 'view' => 'student' ) ) ); ?>">
                     <?php esc_html_e( 'Certificates', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo 'talent-profile' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'student', 'tab' => 'talent-profile' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'talent-profile', $dash_url, array( 'view' => 'student' ) ) ); ?>">
                     <?php esc_html_e( 'Talent Profile', 'growth-hub' ); ?>
                 </a>
             </li>
 
             <li class="gh-nav-item <?php echo ( 'payments' === $current_endpoint || 'purchase_history' === $current_endpoint ) ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'purchase_history' ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'purchase_history', $dash_url, array( 'view' => 'student' ) ) ); ?>">
                     <?php esc_html_e( 'Payments', 'growth-hub' ); ?>
                 </a>
             </li>
@@ -179,65 +197,63 @@ if ( $is_manager_view ) {
             <!-- ============================================== -->
             <!-- TUTOR NAVIGATION (Figma Build 1-3)            -->
             <!-- ============================================== -->
-            <li class="gh-nav-item <?php echo 'index' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'mentor', 'tab' => 'index' ), $dash_url ) ); ?>">
+            <li class="gh-nav-item <?php echo ( 'index' === $current_endpoint || 'overview' === $current_endpoint || empty( $current_endpoint ) || 'dashboard' === $current_endpoint ) ? 'active' : ''; ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'index', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Overview', 'growth-hub' ); ?>
                 </a>
             </li>
-            <li class="gh-nav-item <?php echo 'my-courses' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'my-courses' ); ?>">
+            <li class="gh-nav-item <?php echo ( 'my-courses' === $current_endpoint || 'courses' === $current_endpoint ) ? 'active' : ''; ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'my-courses', $dash_url ) ); ?>">
                     <?php esc_html_e( 'My Courses', 'growth-hub' ); ?>
                 </a>
             </li>
-            <li class="gh-nav-item <?php echo 'mentees' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'mentees' ); ?>">
+            <li class="gh-nav-item <?php echo ( 'mentees' === $current_endpoint || 'students' === $current_endpoint ) ? 'active' : ''; ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'mentees', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Mentees & Students', 'growth-hub' ); ?>
                 </a>
             </li>
-            <li class="gh-nav-item <?php echo 'live-classes' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'live-classes' ); ?>">
+            <li class="gh-nav-item <?php echo ( 'live-classes' === $current_endpoint || 'live_classes' === $current_endpoint ) ? 'active' : ''; ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'live-classes', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Live Classes', 'growth-hub' ); ?>
                 </a>
             </li>
             <li class="gh-nav-item <?php echo 'class-log' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( 'tab', 'class-log', $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'class-log', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Class Log', 'growth-hub' ); ?>
                 </a>
             </li>
             <li class="gh-nav-item <?php echo 'announcements' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'announcements' ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'announcements', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Announcements', 'growth-hub' ); ?>
                 </a>
             </li>
-            <li class="gh-nav-item <?php echo 'question-answer' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'question-answer' ); ?>">
+            <li class="gh-nav-item <?php echo ( 'question-answer' === $current_endpoint || 'discussions' === $current_endpoint ) ? 'active' : ''; ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'question-answer', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Discussions (Q&A)', 'growth-hub' ); ?>
                 </a>
             </li>
-            <li class="gh-nav-item <?php echo 'grading' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'grading' ); ?>">
+            <li class="gh-nav-item <?php echo ( 'grading' === $current_endpoint || 'grades' === $current_endpoint || 'assignments' === $current_endpoint ) ? 'active' : ''; ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'grading', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Grading', 'growth-hub' ); ?>
                 </a>
             </li>
-            <li class="gh-nav-item <?php echo 'my-certificates' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'my-certificates' ); ?>">
+            <li class="gh-nav-item <?php echo ( 'my-certificates' === $current_endpoint || 'certificates' === $current_endpoint ) ? 'active' : ''; ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'my-certificates', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Certificates', 'growth-hub' ); ?>
                 </a>
             </li>
             <li class="gh-nav-item <?php echo 'analytics' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( array( 'view' => 'mentor', 'tab' => 'analytics' ), $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'analytics', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Analytics', 'growth-hub' ); ?>
-                    
                 </a>
             </li>
             <li class="gh-nav-item <?php echo ( 'weekly-report' === $current_endpoint || 'weekly_report' === $current_endpoint || 'concern-report' === $current_endpoint ) ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( add_query_arg( 'tab', 'weekly-report', $dash_url ) ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'weekly-report', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Weekly Report', 'growth-hub' ); ?>
-                    
                 </a>
             </li>
             <li class="gh-nav-item <?php echo 'earning' === $current_endpoint ? 'active' : ''; ?>">
-                <a href="<?php echo esc_url( trailingslashit( $dash_url ) . 'earning' ); ?>">
+                <a href="<?php echo esc_url( gh_portal_nav_link( 'earning', $dash_url ) ); ?>">
                     <?php esc_html_e( 'Earnings', 'growth-hub' ); ?>
                 </a>
             </li>
